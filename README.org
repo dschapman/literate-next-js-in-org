@@ -1,0 +1,89 @@
+#+title: A Literate Next.js Template written in Org Mode
+#+startup: overview
+* Introduction
+What is this? This is an experiment looking at how [[http://www.literateprogramming.com/][literate programming]] and modern web development could work. Specifically, this is a literate Next.js template written in Emacs' org-mode.
+
+Literate programming means that the source code and the documentation are interwoven together and org-mode is the technology I am using to weave them together.
+
+⚠️This is in progress and is my first attempt at literate programming. I'm going to continue building this out over the next couple weeks. Feel free to try and use this template, but it will probably change frequently.
+
+* Getting Started
+First download this org file to the root of an empty folder where you want your Next.js project to get set up. Then open the file using Emacs (most versions of Emacs include org-mode, which also as of version 7.0 includes org-babel).
+
+First we're going to install ~next~, ~react~, and ~react-dom~.
+
+(Put your cursor in Emacs into the code block below and execute it by pressing =C-c C-c=.)
+
+#+begin_src bash :results none
+yarn add next react react-dom
+#+end_src
+
+Next we're going to need to add the following scripts to package.json
+
+#+name: package.json
+#+begin_src js2 :results none :tangle package.json :noweb yes
+<<package-json-beginning>>
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+}
+<<package-json-end>>
+#+end_src
+
+These scripts refer to the different stages of developing an application:
+
+~dev~ - Runs ~next dev~ which starts Next.js in development mode
+~build~ - Runs ~next build~ which builds the application for production usage
+~start~ - Runs ~next start~ which starts a Next.js production server
+
+Next.js is built around the concept of pages. A page is a React Component exported from a ~.js~, ~.jsx~, ~.ts~, or ~.tsx~ file in the pages directory.
+
+Pages are associated with a route based on their file name. For example ~pages/about.js~ is mapped to ~/about~. You can even add dynamic route parameters with the filename.
+
+Create a ~pages~ directory inside your project. (Simply press =C-c C-c= with your cursor in this code block)
+#+begin_src bash :results none
+mkdir pages
+#+end_src
+
+Now to get started we're going to populate ~./pages/index.js~ with the following basic React component:
+
+#+begin_src js2 :tangle ./pages/index.js
+function HomePage() {
+    return <div>Welcome to my Next.js Website written in Org-Mode</div>
+}
+
+export default HomePage
+#+end_src
+
+In order to get this source code from this org document to our project we need to tangle our code. To do that type =M-x org-babel-tangle= in Emacs. This will write all the code blocks to the file system.
+
+Now, in order to view your application in the browser just open a terminal and start the development server
+
+#+begin_src bash :results none
+yarn dev
+#+end_src
+* Appendix
+Here are where other parts of
+** Package.json
+Here you can edit the name, version, description, and dependencies for the package.json:
+#+name: package-json-beginning
+#+begin_src js2
+{
+  "name": "literate-next-org-mode",
+  "version": "0.0.1",
+  "description": "A literate next.js template written in org-mode",
+  "dependencies": {
+    "next": "^10.0.5",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+#+end_src
+
+#+name: package-json-end
+#+begin_src js2
+}
+#+end_src
+* Resources
+- I went through the [[https://nextjs.org/docs][Next.js documentation]] and followed the "manual" instructions
+- [[https://orgmode.org/manual/Working-with-Source-Code.html#Working-with-Source-Code][Org-mode documentation on Source Code blocks]]
