@@ -75,8 +75,8 @@ module.exports = {
   },
 }
 #+end_src
-** Setup a custom _app.js
-Next.js uses the ~App~ component to initialize pages. We're going to override it so that we can control the page initialization. This is useful because it allows us to among other thigns add global CSS - we're including Tailwind (See [[Installing Tailwind]] for more).
+** _app.js
+Next.js uses the ~App~ component to initialize pages. We're going to override it so that we can control the page initialization. This is useful because it allows us to among other things, add global CSS - we're including Tailwind (See [[Installing Tailwind]] for more).
 
 #+begin_src js2 :tangle ./pages/_app.js
 import "../styles/globals.css";
@@ -89,7 +89,7 @@ export default MyApp;
 #+end_src
 
 ** Pages
-*** Create an Index Page
+*** Home Page
 Now to get started we're going to populate ~./pages/index.js~ with the following basic React component:
 
 #+begin_src js2 :tangle ./pages/index.js
@@ -107,7 +107,7 @@ function HomePage() {
 export default HomePage;
 #+end_src
 
-In order to get this source code from this org document to our project we need to tangle our code. To do that type =M-x org-babel-tangle= in Emacs. This will write all the code blocks to the file system.
+In order to get this source code from this org document to our project we need to tangle our code. To do that just run =M-x org-babel-tangle= in Emacs. This will write all the code blocks to the file system. (Note that [[Local Variables][this org file is set up to automatically tangle on save]])
 
 Now, in order to view your application in the browser just open a terminal and start the development server
 
@@ -115,8 +115,7 @@ Now, in order to view your application in the browser just open a terminal and s
 yarn dev
 #+end_src
 * Styles
-Right now the only styles are the Tailwind styles which we've added to ~./styles/globals.css~
-
+Right now the only styles are the Tailwind styles which we've added to ~./styles/globals.css~ and imported in [[_app.js]]
 #+begin_src css :tangle ./styles/globals.css
 @tailwind base;
 @tailwind components;
@@ -149,6 +148,7 @@ This block just provides the closing bracket for the package.json
 #+end_src
 * Resources
 - I went through the [[https://nextjs.org/docs][Next.js documentation]] and followed the "manual" instructions
+- [[https://tailwindcss.com/docs/guides/nextjs][Tailwind CSS Next.js installation documentation]]
 - [[https://orgmode.org/manual/Working-with-Source-Code.html#Working-with-Source-Code][Org-mode documentation on Source Code blocks]]
 
 * Local Variables :noexport:
