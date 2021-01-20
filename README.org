@@ -6,7 +6,7 @@ What is this? This is an experiment looking at how [[http://www.literateprogramm
 Literate programming means that the source code and the documentation are interwoven together and org-mode is the technology I am using to weave them together.
 
 ⚠️This is in progress and is my first attempt at literate programming. I'm going to continue building this out over the next couple weeks. Feel free to try and use this template, but it will probably change frequently.
-
+  
 * Getting Started
 First download this org file to the root of an empty folder where you want your Next.js project to get set up. Then open the file using Emacs (most versions of Emacs include org-mode, which also as of version 7.0 includes org-babel).
 ** Installing Next
@@ -79,17 +79,17 @@ module.exports = {
 Next.js uses the ~App~ component to initialize pages. We're going to override it so that we can control the page initialization. This is useful because it allows us to among other thigns add global CSS - we're including Tailwind (See [[Installing Tailwind]] for more).
 
 #+begin_src js2 :tangle ./pages/_app.js
-import '../styles/globals.css'
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return <Component {...pageProps} />;
 }
 
-export default MyApp
+export default MyApp;
 #+end_src
 
-
-** Create an Index Page
+** Pages
+*** Create an Index Page
 Now to get started we're going to populate ~./pages/index.js~ with the following basic React component:
 
 #+begin_src js2 :tangle ./pages/index.js
@@ -115,13 +115,15 @@ Now, in order to view your application in the browser just open a terminal and s
 yarn dev
 #+end_src
 * Styles
+Right now the only styles are the Tailwind styles which we've added to ~./styles/globals.css~
+
 #+begin_src css :tangle ./styles/globals.css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 #+end_src
 * Appendix
-Here are where other parts of
+Here are where other parts of the configuration files are kept.
 ** Package.json
 Here you can edit the name, version, description, and dependency versions for the package.json:
 #+name: package-json-beginning
