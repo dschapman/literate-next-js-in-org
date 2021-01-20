@@ -9,7 +9,7 @@ Literate programming means that the source code and the documentation are interw
 
 * Getting Started
 First download this org file to the root of an empty folder where you want your Next.js project to get set up. Then open the file using Emacs (most versions of Emacs include org-mode, which also as of version 7.0 includes org-babel).
-
+** Installing Next
 First we're going to install ~next~, ~react~, and ~react-dom~.
 
 (Put your cursor in Emacs into the code block below and execute it by pressing =C-c C-c=.)
@@ -41,19 +41,70 @@ Next.js is built around the concept of pages. A page is a React Component export
 
 Pages are associated with a route based on their file name. For example ~pages/about.js~ is mapped to ~/about~. You can even add dynamic route parameters with the filename.
 
-Create a ~pages~ directory inside your project. (Simply press =C-c C-c= with your cursor in this code block)
+Create a ~pages~ directory and a ~styles~ directory inside your project. (Simply press =C-c C-c= with your cursor in this code block)
 #+begin_src bash :results none
 mkdir pages
+mkdir styles
 #+end_src
 
+** Installing Tailwind
+#+begin_src bash :results none
+yarn add tailwindcss@latest postcss@latest autoprefixer@latest
+#+end_src
+
+*** tailwind.config.js
+#+begin_src js2 :tangle tailwind.config.js
+module.exports = {
+  purge: ['./pages/**/*.js', './components/**/*.js'],
+  darkMode: false, // or 'media' or 'class'
+  theme: {
+    extend: {},
+  },
+  variants: {
+    extend: {},
+  },
+  plugins: [],
+}
+#+end_src
+*** postcss.config.js
+#+begin_src js2 :tangle postcss.config.js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+#+end_src
+** Setup a custom _app.js
+Next.js uses the ~App~ component to initialize pages. We're going to override it so that we can control the page initialization. This is useful because it allows us to among other thigns add global CSS - we're including Tailwind (See [[Installing Tailwind]] for more).
+
+#+begin_src js2 :tangle ./pages/_app.js
+import '../styles/globals.css'
+
+function MyApp({ Component, pageProps }) {
+  return <Component {...pageProps} />
+}
+
+export default MyApp
+#+end_src
+
+
+** Create an Index Page
 Now to get started we're going to populate ~./pages/index.js~ with the following basic React component:
 
 #+begin_src js2 :tangle ./pages/index.js
 function HomePage() {
-    return <div>Welcome to my Next.js Website written in Org-Mode</div>
+  return (
+    <>
+      <h1 className="text-xl text-blue-800">
+        Welcome to my Next.js Website written in Org-Mode.
+      </h1>
+      <h2 className="text-lg text-red-400">This is really neat!</h2>
+    </>
+  );
 }
 
-export default HomePage
+export default HomePage;
 #+end_src
 
 In order to get this source code from this org document to our project we need to tangle our code. To do that type =M-x org-babel-tangle= in Emacs. This will write all the code blocks to the file system.
@@ -63,23 +114,33 @@ Now, in order to view your application in the browser just open a terminal and s
 #+begin_src bash :results none
 yarn dev
 #+end_src
+* Styles
+#+begin_src css :tangle ./styles/globals.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+#+end_src
 * Appendix
 Here are where other parts of
 ** Package.json
-Here you can edit the name, version, description, and dependencies for the package.json:
+Here you can edit the name, version, description, and dependency versions for the package.json:
 #+name: package-json-beginning
 #+begin_src js2
 {
   "name": "literate-next-org-mode",
-  "version": "0.0.1",
-  "description": "A literate next.js template written in org-mode",
+  "version": "0.0.2",
+  "description": "A literate next.js template written in org-mode. Also now includes Tailwind CSS!",
   "dependencies": {
+    "autoprefixer": "^10.2.3",
+    "postcss": "^8.2.4",
+    "tailwindcss": "^2.0.2",  
     "next": "^10.0.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
 #+end_src
 
+This block just provides the closing bracket for the package.json
 #+name: package-json-end
 #+begin_src js2
 }
@@ -87,3 +148,8 @@ Here you can edit the name, version, description, and dependencies for the packa
 * Resources
 - I went through the [[https://nextjs.org/docs][Next.js documentation]] and followed the "manual" instructions
 - [[https://orgmode.org/manual/Working-with-Source-Code.html#Working-with-Source-Code][Org-mode documentation on Source Code blocks]]
+
+* Local Variables :noexport:
+# Local Variables:
+# eval: (add-hook 'after-save-hook (lambda ()(org-babel-tangle)) nil t)
+# End:
