@@ -13,13 +13,15 @@ However, because the org source blocks don't have as much functionality -- autoc
 * Getting Started
 First download this org file to the root of an empty folder where you want your Next.js project to get set up. Then open the file using Emacs (most versions of Emacs include org-mode, which also as of version 7.0 includes org-babel).
 
+You can edit the name and description of the project here. These code blocks get pulled into and written to the [[package.json]] file.
+
 #+name: project-name
 #+begin_src json
 "name": "literate-next-org-mode"
 #+end_src
 #+name: project-description
 #+begin_src json
-"description": "A literate next.js starter written in org-mode. Also now includes Tailwind CSS and Typescript!"
+"description": "A literate next.js starter written in org-mode. Includes Tailwind CSS, Typescript, and Next-SEO!"
 #+end_src
 ** Installing Next
 First we're going to install ~next~, ~react~, and ~react-dom~.
@@ -133,15 +135,46 @@ yarn add --dev typescript @types/react @types/node
 /// <reference types="next" />
 /// <reference types="next/types/global" />
 #+end_src
+** Installing and Configuring Next-SEO
+#+begin_src bash results: none
+yarn add next-seo
+#+end_src
+
+We're going to preload some default values into next-seo
+#+name: default SEO
+#+begin_src js2 :tangle next-seo.config.js
+export default {
+  title: "My Title",
+  titleTemplate: "%s | Title",
+  description: "This is the description of my site",
+  favicon: "/favicon.ico",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://example.com",
+    site_name: "SiteName",
+  },
+};
+#+end_src
+
+Next we're going to import it and add our default SEO to our [[_app.tsx]]
+
 ** _app.tsx
-Next.js uses the ~App~ component to initialize pages. We're going to override it so that we can control the page initialization. This is useful because it allows us to among other things, add global CSS - we're including Tailwind (See [[Installing Tailwind]] for more).
+Next.js uses the ~App~ component to initialize pages. We're going to override it so that we can control the page initialization. This is useful because it allows us to among other things, add global CSS - we're including Tailwind (See [[Installing Tailwind]] for more). We're also using next-seo to provide our [[default SEO]] values.
 
 #+begin_src typescript :tangle ./pages/_app.tsx
 import "../styles/globals.css";
 import { AppProps } from "next/app";
+import { DefaultSeo } from "next-seo";
+import SEO from "../next-seo.config.js";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <DefaultSeo {...SEO} />
+      <Component {...pageProps} />
+    </>
+  );
 }
 
 export default MyApp;
@@ -184,13 +217,13 @@ Right now the only styles are the Tailwind styles which we've added to ~./styles
 #+end_src
 * Appendix
 Here are where other parts of the configuration files are kept.
-** Package.json
+** package.json
 Here you can edit the version, description, and dependency versions for the package.json:
 #+name: package-json-beginning
 #+begin_src json :noweb yes :tangle package.json
 {
   <<project-name>>,
-  "version": "0.0.3",
+  "version": "0.0.4",
   <<project-description>>,
   "license": "MIT",
   "dependencies": {
@@ -198,6 +231,7 @@ Here you can edit the version, description, and dependency versions for the pack
     "postcss": "^8.2.4",
     "tailwindcss": "^2.0.2",
     "next": "^10.0.5",
+    "next-seo": "^4.17.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
