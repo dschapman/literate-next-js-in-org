@@ -1,4 +1,5 @@
 #+title: A Literate Next.js Template written in Org Mode
+#+author: Daniel Chapman
 #+startup: overview
 * Introduction
 What is this? This is an experiment looking at how [[http://www.literateprogramming.com/][literate programming]] and modern web development could work. Specifically, this is a literate Next.js template written in Emacs' org-mode.
@@ -7,10 +8,19 @@ Literate programming means that the source code and the documentation are interw
 
 At the end of following this template you will have a Next.js Template with typescript and tailwind ready to go. The advantage of using this template is you be able to execute each step as you read the documentation and know what the code you are getting is supposed to do for you.
 
-However, because the org source blocks don't have as much functionality -- autocomplete, auto-formatting, etc. -- it is worth assessing whether or not it is worth the loss of that functionality to continue editing in this document after you use it to jump start your project.
+However, because the org source blocks don't have as much functionality -- autocomplete, auto-formatting, etc. -- after reading through and executing this starter, it is worth assessing whether or not it is worth the loss of that functionality to continue editing in this document after you use it to jump start your project.
   
 * Getting Started
 First download this org file to the root of an empty folder where you want your Next.js project to get set up. Then open the file using Emacs (most versions of Emacs include org-mode, which also as of version 7.0 includes org-babel).
+
+#+name: project-name
+#+begin_src json
+"name": "literate-next-org-mode"
+#+end_src
+#+name: project-description
+#+begin_src json
+"description": "A literate next.js starter written in org-mode. Also now includes Tailwind CSS and Typescript!"
+#+end_src
 ** Installing Next
 First we're going to install ~next~, ~react~, and ~react-dom~.
 
@@ -22,15 +32,13 @@ yarn add next react react-dom
 
 Next we're going to need to add the following scripts to package.json
 
-#+name: package.json
-#+begin_src json :results none :tangle package.json :noweb yes
-<<package-json-beginning>>
+#+name: project-scripts
+#+begin_src json :results none :noweb yes
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
-},
-<<package-json-end>>
+}
 #+end_src
 
 These scripts refer to the different stages of developing an application:
@@ -69,6 +77,8 @@ module.exports = {
 }
 #+end_src
 *** postcss.config.js
+Tailwind is a PostCSS plugin and Next.js supports using PostCSS out of the box. This file specifies which PostCSS plugins we're going to use.
+
 #+begin_src js2 :tangle postcss.config.js
 module.exports = {
   plugins: {
@@ -78,9 +88,9 @@ module.exports = {
 }
 #+end_src
 ** Installing Typescript
-Next.js provides an integrated TypeScript experience out of the box, similar to an IDE.
+Next.js provides an integrated TypeScript experience out of the box.
 
-To get started, install typescript and dependencies:
+To get started, install typescript and dependencies (again place your cursor inside this source block and press =C-c C-c= to execute it):
 #+begin_src bash :results none
 yarn add --dev typescript @types/react @types/node
 #+end_src
@@ -175,34 +185,31 @@ Right now the only styles are the Tailwind styles which we've added to ~./styles
 * Appendix
 Here are where other parts of the configuration files are kept.
 ** Package.json
-Here you can edit the name, version, description, and dependency versions for the package.json:
+Here you can edit the version, description, and dependency versions for the package.json:
 #+name: package-json-beginning
-#+begin_src json
+#+begin_src json :noweb yes :tangle package.json
 {
-  "name": "literate-next-org-mode",
-  "version": "0.0.2",
-  "description": "A literate next.js template written in org-mode. Also now includes Tailwind CSS and Typescript!",
+  <<project-name>>,
+  "version": "0.0.3",
+  <<project-description>>,
+  "license": "MIT",
   "dependencies": {
     "autoprefixer": "^10.2.3",
     "postcss": "^8.2.4",
-    "tailwindcss": "^2.0.2",  
+    "tailwindcss": "^2.0.2",
     "next": "^10.0.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
-#+end_src
-
-This block just provides the closing bracket for the package.json
-#+name: package-json-end
-#+begin_src json
-
-  "devDependencies": {
+  <<project-scripts>>,
+     "devDependencies": {
     "@types/node": "^14.14.22",
     "@types/react": "^17.0.0",
     "typescript": "^4.1.3"
   }
 }
 #+end_src
+
 ** Resources
 - I went through the [[https://nextjs.org/docs][Next.js documentation]] and followed the "manual" instructions
 - [[https://tailwindcss.com/docs/guides/nextjs][Tailwind CSS Next.js installation documentation]]
